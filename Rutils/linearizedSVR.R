@@ -1,10 +1,10 @@
 library(kernlab)
 library(LiblineaR)
 
-LinearizedSVRTrain <- function(X, Y, 
-                C = 1, epsilon = 0.01, nump = floor(sqrt(N)), 
-                ktype=rbfdot, kpar=list(sigma=sum(km$tot.withinss)/N)){
-  
+LinearizedSVRTrain <- function(X, Y,
+                C = 1, epsilon = 0.01, nump = floor(sqrt(N)),
+                ktype=rbfdot, kpar=list(sigma=median(dist(X[sample(1:nrow(X),max(nrow(X),50)),])))){
+
   N <- dim(X)[1]; D <- dim(X)[2]
   tmp <- normalize(cbind(Y,X))
   Xn <- tmp$Xn[,-1]
