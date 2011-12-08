@@ -25,10 +25,12 @@ LinearizedSVRTrain <- function(X, Y,
    
   svc <- LiblineaR(data, labels, type=2, cost=C, bias = TRUE)
   model <- list(W = svc$W, prototypes=prototypes, params=tmp$params, kernel=kernel)
+  class(model) <- 'LinearizedSVR'
   return(model)
 }
-                                             
-LinearizedSVRPredict <- function(model, newdata){
+
+
+predict.LinearizedSVR <- function(model, newdata){
   tmp <- normalize(cbind(array(0, dim(newdata)[1]),newdata), model$params) #the zero array is because the params had the target also
   Xn <- tmp$Xn[,-1]
   Xt <- kernelMatrix(model$kernel, Xn, model$prototypes)
@@ -38,7 +40,11 @@ LinearizedSVRPredict <- function(model, newdata){
   Y.hat <- Y.hat *(model$params$MM[1]-model$params$mm[1]) + model$params$mm[1] #unnormalize predictions
   return(Y.hat)
 }
- 
+
+## Old name, for backward compatibility
+LinearizedSVRPredict <- predict.LinearizedSVR
+
+
 normalize <- function(X, params){
   if (missing(params)){
     params <- list(MM = apply(X, 2, max), mm = apply(X, 2, min))
