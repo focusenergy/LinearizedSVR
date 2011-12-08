@@ -12,17 +12,17 @@ LinearizedSVRTrain <- function(X, Y,
   km <- suppressWarnings(kmeans(Xn, centers=nump))
   prototypes <- km$centers
   kernel <- do.call(ktype, kpar)
-  
+
   print(kpar$sigma)
-  
+
   Xt <- kernelMatrix(kernel, Xn, prototypes)
   print(dim(Xt))
-  
+
   Xt0 <- cbind(Yn-epsilon, Xt)
   Xt1 <- cbind(Yn+epsilon, Xt)
   data <- rbind(Xt0, Xt1)
   labels <- append(array(0, N), array(1, N))
-   
+
   svc <- LiblineaR(data, labels, type=2, cost=C, bias = TRUE)
   model <- list(W = svc$W, prototypes=prototypes, params=tmp$params, kernel=kernel)
   class(model) <- 'LinearizedSVR'
@@ -50,7 +50,7 @@ normalize <- function(X, params){
     params <- list(MM = apply(X, 2, max), mm = apply(X, 2, min))
   }
   Xn <- sweep(X, 2, params$mm)
-  Xn <- sweep(Xn, 2, (params$MM-params$mm), FUN="/")     
+  Xn <- sweep(Xn, 2, (params$MM-params$mm), FUN="/")
   return(list(Xn=Xn, params=params))
 }
-                                             
+
