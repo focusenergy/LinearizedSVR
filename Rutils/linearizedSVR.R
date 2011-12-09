@@ -3,14 +3,16 @@ library(LiblineaR)
 
 LinearizedSVRTrain <- function(X, Y,
                 C = 1, epsilon = 0.01, nump = floor(sqrt(N)),
-                ktype=rbfdot, kpar){
+                ktype=rbfdot, kpar, prototypes=c("kmeans","random")){
 
   N <- dim(X)[1]; D <- dim(X)[2]
   tmp <- normalize(cbind(Y,X))
   Xn <- tmp$Xn[,-1]
   Yn <- tmp$Xn[,1]
-  km <- suppressWarnings(kmeans(Xn, centers=nump))
-  prototypes <- km$centers
+
+  prototypes <- switch(match.arg(prototypes),
+                       kmeans = suppressWarnings(kmeans(Xn, centers=nump))$centers,
+                       random = Xn[sample(nrow(Xn),nump),])
 
   if (missing(kpar)) {
     kpar <- list(sigma=median(dist(Xn[sample(1:nrow(Xn),min(nrow(Xn),50)),])))
