@@ -3,7 +3,7 @@ library(LiblineaR)
 
 LinearizedSVRTrain <- function(X, Y,
                 C = 1, epsilon = 0.01, nump = floor(sqrt(N)),
-                ktype=rbfdot, kpar=list(sigma=median(dist(X[sample(1:nrow(X),max(nrow(X),50)),])))){
+                ktype=rbfdot, kpar){
 
   N <- dim(X)[1]; D <- dim(X)[2]
   tmp <- normalize(cbind(Y,X))
@@ -11,6 +11,11 @@ LinearizedSVRTrain <- function(X, Y,
   Yn <- tmp$Xn[,1]
   km <- suppressWarnings(kmeans(Xn, centers=nump))
   prototypes <- km$centers
+
+  if (missing(kpar)) {
+    kpar <- list(sigma=median(dist(Xn[sample(1:nrow(Xn),min(nrow(Xn),50)),])))
+  }
+
   kernel <- do.call(ktype, kpar)
 
   print(kpar$sigma)
