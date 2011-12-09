@@ -50,7 +50,7 @@ normalize <- function(X, params){
     params <- list(MM = apply(X, 2, max), mm = apply(X, 2, min))
   }
   Xn <- sweep(X, 2, params$mm)
-  Xn <- sweep(Xn, 2, (params$MM-params$mm), FUN="/")
+  Xn <- sweep(Xn, 2, ifelse(params$MM==params$mm, 1, params$MM-params$mm), FUN="/")
   return(list(Xn=Xn, params=params))
 }
 
