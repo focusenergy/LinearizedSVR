@@ -28,7 +28,7 @@ LinearizedSVRTrain <- function(X, Y,
   Xt0 <- cbind(Yn-epsilon, Xt)
   Xt1 <- cbind(Yn+epsilon, Xt)
   data <- rbind(Xt0, Xt1)
-  labels <- append(array(0, N), array(1, N))
+  labels <- rep(c(0,1), each=N)
 
   svc <- LiblineaR(data, labels, type=2, cost=C, bias = TRUE)
   model <- list(W = svc$W, prototypes=prototypes, params=tmp$params, kernel=kernel)
