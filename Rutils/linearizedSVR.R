@@ -17,13 +17,13 @@ LinearizedSVRTrain <- function(X, Y,
   if (missing(kpar)) {
     kpar <- list(sigma=median(dist(Xn[sample(1:nrow(Xn),min(nrow(Xn),50)),])))
   }
+  if ('sigma' %in% names(kpar))
+    message("Sigma: ", kpar$sigma)
 
   kernel <- do.call(ktype, kpar)
 
-  print(kpar$sigma)
-
   Xt <- kernelMatrix(kernel, Xn, prototypes)
-  print(dim(Xt))
+  message("Kernel dimensions: ", dim(Xt))
 
   Xt0 <- cbind(Yn-epsilon, Xt)
   Xt1 <- cbind(Yn+epsilon, Xt)
