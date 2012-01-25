@@ -23,7 +23,7 @@ LinearizedSVRTrain <- function(X, Y,
   kernel <- do.call(ktype, kpar)
 
   Xt <- kernelMatrix(kernel, Xn, prototypes)
-  message("Kernel dimensions: ", dim(Xt))
+  message("Kernel dimensions: [", paste(dim(Xt), collapse=' x '), "]")
 
   Xt0 <- cbind(Yn-epsilon, Xt)
   Xt1 <- cbind(Yn+epsilon, Xt)
