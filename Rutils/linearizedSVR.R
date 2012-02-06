@@ -5,7 +5,7 @@ LinearizedSVRTrain <- function(X, Y,
                 C = 1, epsilon = 0.01, nump = floor(sqrt(N)),
                 ktype=rbfdot, kpar, prototypes=c("kmeans","random")){
 
-  N <- dim(X)[1]; D <- dim(X)[2]
+  N <- nrow(X); D <- ncol(X)
   tmp <- normalize(cbind(Y,X))
   Xn <- tmp$Xn[,-1]
   Yn <- tmp$Xn[,1]
@@ -38,7 +38,7 @@ LinearizedSVRTrain <- function(X, Y,
 
 
 predict.LinearizedSVR <- function(model, newdata){
-  tmp <- normalize(cbind(array(0, dim(newdata)[1]),newdata), model$params) #the zero array is because the params had the target also
+  tmp <- normalize(cbind(0, newdata), model$params) #the zero column is because the params had the target also
   Xn <- tmp$Xn[,-1]
   Xt <- kernelMatrix(model$kernel, Xn, model$prototypes)
   Xt <- cbind(Xt, array(1, dim(Xt)[1]))
