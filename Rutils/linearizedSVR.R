@@ -9,10 +9,12 @@ LinearizedSVRTrain <- function(X, Y,
   tmp <- normalize(cbind(Y,X))
   Xn <- tmp$Xn[,-1]
   Yn <- tmp$Xn[,1]
+  pars <- tmp$params
 
   prototypes <- switch(match.arg(prototypes),
                        kmeans = suppressWarnings(kmeans(Xn, centers=nump))$centers,
                        random = Xn[sample(nrow(Xn),nump),])
+  rm(tmp, X, Y)  ## Free some memory
 
   if (missing(kpar)) {
     kpar <- list(sigma=median(dist(Xn[sample(1:nrow(Xn),min(nrow(Xn),50)),])))
@@ -31,7 +33,7 @@ LinearizedSVRTrain <- function(X, Y,
   labels <- rep(c(0,1), each=N)
 
   svc <- LiblineaR(data, labels, type=2, cost=C, bias = TRUE)
-  model <- list(W = svc$W, prototypes=prototypes, params=tmp$params, kernel=kernel)
+  model <- list(W = svc$W, prototypes=prototypes, params=pars, kernel=kernel)
   class(model) <- 'LinearizedSVR'
   return(model)
 }
