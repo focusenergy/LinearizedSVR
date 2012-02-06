@@ -3,7 +3,7 @@ library(LiblineaR)
 
 LinearizedSVRTrain <- function(X, Y,
                 C = 1, epsilon = 0.01, nump = floor(sqrt(N)),
-                ktype=rbfdot, kpar, prototypes=c("kmeans","random")){
+                ktype=rbfdot, kpar, prototypes=c("kmeans","random"), clusterY=FALSE){
 
   N <- nrow(X); D <- ncol(X)
   tmp <- normalize(cbind(Y,X))
@@ -12,7 +12,11 @@ LinearizedSVRTrain <- function(X, Y,
   pars <- tmp$params
 
   prototypes <- switch(match.arg(prototypes),
-                       kmeans = suppressWarnings(kmeans(Xn, centers=nump))$centers,
+                       kmeans = if(clusterY) {
+                             suppressWarnings(kmeans(tmp$Xn, centers=nump))$centers[,-1]
+                           } else {
+                             suppressWarnings(kmeans(Xn, centers=nump))$centers
+                           },
                        random = Xn[sample(nrow(Xn),nump),])
   rm(tmp, X, Y)  ## Free some memory
 
@@ -63,7 +67,7 @@ normalize <- function(X, params){
   return(list(Xn=Xn, params=params))
 }
 
-##' Test code (should convert to RUnit):
+##' # Test code (should convert to RUnit):
 ##' dat <- data.frame(y=2, x1=rnorm(500,1), x2=rnorm(500,1))
 ##' dat <- rbind(dat, data.frame(y=1, x1=rnorm(500,-1), x2=rnorm(500,-1)))
 ##' plot(x2 ~ x1, dat, col=c("red","green")[dat$y])
@@ -72,11 +76,13 @@ normalize <- function(X, params){
 ##' table(res>0)
 ##' plot(x2 ~ x1, dat, col=c("red","green")[1+(res>0.5)])
 ##'
+##' # An example that goes very badly with clusterY=FALSE, but often
+##' # (not always) does well with clusterY=TRUE:
 ##' dat2 <- data.frame(y=0, x1=rnorm(500,0), x2=rnorm(500,3))
 ##' dat2 <- rbind(dat2, data.frame(y=0, x1=rnorm(500,0), x2=rnorm(500,-3)))
 ##' dat2$y <- 1+(dat2$x1 > 0)
 ##' plot(x2 ~ x1, dat2, col=c("red","green")[dat2$y])
-##' mod2 <- LinearizedSVRTrain(X=as.matrix(dat2[-1]), Y=dat2$y, nump=4)
+##' mod2 <- LinearizedSVRTrain(X=as.matrix(dat2[-1]), Y=dat2$y, nump=4, clusterY=TRUE)
 ##' res2 <- predict(mod2, newdata=as.matrix(dat2[-1]))
 ##' table(res2>1.5)
 ##' plot(x2 ~ x1, dat2, col=c("red","green")[1+(res2>1.5)])
