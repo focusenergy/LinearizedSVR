@@ -61,3 +61,11 @@ normalize <- function(X, params){
   return(list(Xn=Xn, params=params))
 }
 
+##' Test code:
+##' dat <- data.frame(y=1, x1=rnorm(500,1), x2=rnorm(500,1))
+##' dat <- rbind(dat, data.frame(y=-1, x1=rnorm(500,-1), x2=rnorm(500,-1)))
+##' plot(x2 ~ x1, dat, col=c("red","green")[1+(res>0)])
+##' mod <- LinearizedSVRTrain(X=as.matrix(dat[-1]), Y=dat$y, nump=6)
+##' res <- predict(mod, newdata=as.matrix(dat[-1]))
+##' table(res>0)
+##' plot(x2 ~ x1, dat, col=c("red","green")[dat$y/2+1.5])
