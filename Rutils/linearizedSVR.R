@@ -67,6 +67,13 @@ normalize <- function(X, params){
   return(list(Xn=Xn, params=params))
 }
 
+unnormalize <- function(X, params){
+  Xn <- sweep(X, 2, ifelse(params$MM==params$mm, 1, params$MM-params$mm), FUN=`*`)
+  Xn <- sweep(Xn, 2, params$mm, FUN=`+`)
+  return(Xn)
+}
+
+
 ##' # Test code (should convert to RUnit):
 ##' dat <- data.frame(y=2, x1=rnorm(500,1), x2=rnorm(500,1))
 ##' dat <- rbind(dat, data.frame(y=1, x1=rnorm(500,-1), x2=rnorm(500,-1)))
