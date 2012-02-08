@@ -3,7 +3,8 @@ library(LiblineaR)
 
 LinearizedSVRTrain <- function(X, Y,
                 C = 1, epsilon = 0.01, nump = floor(sqrt(N)),
-                ktype=rbfdot, kpar, prototypes=c("kmeans","random"), clusterY=FALSE){
+                ktype=rbfdot, kpar, prototypes=c("kmeans","random"), clusterY=FALSE,
+                epsilon.up=epsilon, epsilon.down=epsilon){
 
   N <- nrow(X); D <- ncol(X)
   tmp <- normalize(cbind(Y,X))
@@ -31,8 +32,8 @@ LinearizedSVRTrain <- function(X, Y,
   Xt <- kernelMatrix(kernel, Xn, prototypes)
   message("Kernel dimensions: [", paste(dim(Xt), collapse=' x '), "]")
 
-  Xt0 <- cbind(Yn-epsilon, Xt)
-  Xt1 <- cbind(Yn+epsilon, Xt)
+  Xt0 <- cbind(Yn-epsilon.down, Xt)
+  Xt1 <- cbind(Yn+epsilon.up, Xt)
   data <- rbind(Xt0, Xt1)
   labels <- rep(c(0,1), each=N)
 
