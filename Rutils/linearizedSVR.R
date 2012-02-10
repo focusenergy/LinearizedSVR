@@ -21,14 +21,14 @@ LinearizedSVRTrain <- function(X, Y,
                        random = Xn[sample(nrow(Xn),nump),])
   rm(tmp, X, Y)  ## Free some memory
 
-  
+
   if(!is.na(match("sigma", names(formals(ktype))))){
     if (missing(kpar)) {
       kpar <- list()
     }
     if(is.null(kpar$sigma)){
-      kpar$sigma <- median(dist(Xn[sample(1:nrow(Xn),min(nrow(Xn),50)),]))
-    }  
+      kpar$sigma <- median(dist(Xn[sample(nrow(Xn),min(nrow(Xn),50)),]))
+    }
   }
   if ('sigma' %in% names(kpar))
     message("Sigma: ", kpar$sigma)
