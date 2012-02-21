@@ -4,7 +4,7 @@ library(LiblineaR)
 LinearizedSVRTrain <- function(X, Y,
                 C = 1, epsilon = 0.01, nump = floor(sqrt(N)),
                 ktype=rbfdot, kpar, prototypes=c("kmeans","random"), clusterY=FALSE,
-                epsilon.up=epsilon, epsilon.down=epsilon){
+                epsilon.up=epsilon, epsilon.down=epsilon, q = NULL){
 
   N <- nrow(X); D <- ncol(X)
   tmp <- normalize(cbind(Y,X))
@@ -43,7 +43,14 @@ LinearizedSVRTrain <- function(X, Y,
   data <- rbind(Xt0, Xt1)
   labels <- rep(c(0,1), each=N)
 
-  svc <- LiblineaR(data, labels, type=2, cost=C, bias = TRUE)
+  if(is.null(q)){
+    svc <- LiblineaR(data, labels, type=2, cost=C, bias = TRUE)
+  }
+  else{
+    class.weights <- c(1-q, q)
+    names(class.weights) <- c(0, 1)
+    svc <- LiblineaR(data, labels, type=3, cost=C, bias = TRUE, wi=class.weights)
+  }
   model <- list(W = svc$W, prototypes=prototypes, params=pars, kernel=kernel)
   class(model) <- 'LinearizedSVR'
   return(model)
