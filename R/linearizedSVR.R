@@ -1,10 +1,11 @@
 library(kernlab)
 library(LiblineaR)
+library(expectreg)
 
 LinearizedSVRTrain <- function(X, Y,
                 C = 1, epsilon = 0.01, nump = floor(sqrt(N)),
                 ktype=rbfdot, kpar, prototypes=c("kmeans","random"), clusterY=FALSE,
-                epsilon.up=epsilon, epsilon.down=epsilon, q = NULL){
+                epsilon.up=epsilon, epsilon.down=epsilon, quantile = NULL){
 
   N <- nrow(X); D <- ncol(X)
   tmp <- normalize(cbind(Y,X))
@@ -43,15 +44,16 @@ LinearizedSVRTrain <- function(X, Y,
   data <- rbind(Xt0, Xt1)
   labels <- rep(c(0,1), each=N)
 
-  if(is.null(q)){
+  if(is.null(quantile)){
     svc <- LiblineaR(data, labels, type=2, cost=C, bias = TRUE)
+    W <- svc$W
   }
   else{
-    class.weights <- c(1-q, q)
-    names(class.weights) <- c(0, 1)
-    svc <- LiblineaR(data, labels, type=3, cost=C, bias = TRUE, wi=class.weights)
+    ex <- expectreg.ls(Yn~rb(Xt, type="special", B=Xt, P=diag(rep(1, nump))), 
+                      estimate="bundle", smooth="fixed", expectiles=quantile)
+    W <- c(-1, unlist(ex$coefficients), ex$intercept)
   }
-  model <- list(W = svc$W, prototypes=prototypes, params=pars, kernel=kernel)
+  model <- list(W = W, prototypes=prototypes, params=pars, kernel=kernel)
   class(model) <- 'LinearizedSVR'
   return(model)
 }
