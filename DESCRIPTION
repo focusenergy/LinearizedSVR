@@ -1,9 +1,16 @@
 Package: LinearizedSVR
 Type: Package
-Title: What the package does (short line)
+Title: Linearized Support Vector Regression
 Version: 1.0
 Date: 2012-02-15
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Author: Sriharsha Veeramachaneni and Ken Williams
+Maintainer: Ken Williams <ken.williams@windlogics.com>
+Description: Train and predict using prototype-based Linearized Support-Vector
+    Regression methods.
+License: Unknown
+Collate:
+    'linearizedSVR.R'
+Depends:
+    kernlab,
+    LiblineaR,
+    expectreg
