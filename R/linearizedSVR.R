@@ -1,7 +1,41 @@
+##' Train and predict using prototype-based Linearized Support-Vector Regression methods.
+##'
+##' .. content for \details{} ..
+##'
+##' @name linearizedSVR-package
+##' @docType package
+##' @title Linearized Support Vector Regression
+
 library(kernlab)
 library(LiblineaR)
 library(expectreg)
 
+
+
+##' .. content for \description{} (no empty lines) ..
+##'
+##' .. content for \details{} ..
+##' @title LinearizedSVRTrain
+##' @param X matrix of examples, one example per row.
+##' @param Y vector of target values.  Must be the same length as the number of rows in \code{X}.
+##' @param C cost of constraints violation
+##' @param epsilon tolerance of termination criterion for optimization
+##' @param nump number of prototypes by which to represent each example in \code{X}
+##' @param ktype kernel-generating function, typically from the \pkg{kernlab} package
+##' @param kpar a list of any parameters necessary for \code{ktype}.  See Details.
+##' @param prototypes the method by which prototypes will be chosen
+##' @param clusterY whether to cluster \code{X} and \code{Y} jointly
+##' when using \code{prototypes="kmeans"}.  Otherwise \code{X} is
+##' clustered without influence from \code{Y}.
+##' @param epsilon.up allows you to use a different setting for
+##' \code{epsilon} in the positive direction.
+##' @param epsilon.down allows you to use a different setting for
+##' \code{epsilon} in the negative direction.
+##' @param quantile if non-null, do quantile regression using the
+##' given quantile value.  Currently uses the \code{expectreg}
+##' package.
+##' @return a model object that can later be used as the first
+##' argument for the \code{predict()} method.
 LinearizedSVRTrain <- function(X, Y,
                 C = 1, epsilon = 0.01, nump = floor(sqrt(N)),
                 ktype=rbfdot, kpar, prototypes=c("kmeans","random"), clusterY=FALSE,
@@ -49,7 +83,7 @@ LinearizedSVRTrain <- function(X, Y,
     W <- svc$W
   }
   else{
-    ex <- expectreg.ls(Yn~rb(Xt, type="special", B=Xt, P=diag(rep(1, nump))), 
+    ex <- expectreg.ls(Yn~rb(Xt, type="special", B=Xt, P=diag(rep(1, nump))),
                       estimate="bundle", smooth="fixed", expectiles=quantile)
     W <- c(-1, unlist(ex$coefficients), ex$intercept)
   }
@@ -58,7 +92,15 @@ LinearizedSVRTrain <- function(X, Y,
   return(model)
 }
 
-
+##' .. content for \description{} (no empty lines) ..
+##'
+##' .. content for \details{} ..
+##' @title predict
+##' @param model a model previously trained using \code{LinearizedSVRTrain()}
+##' @param newdata a matrix of new data to run predictions on, with
+##' the same columns as \code{X} had during training
+##' @return a vector of predicted regression values, with length equal
+##' to the number of rows in \code{newdata}.
 predict.LinearizedSVR <- function(model, newdata){
   tmp <- .normalize(cbind(0, newdata), model$params) #the zero column is because the params had the target also
   Xn <- tmp$Xn[, -1, drop=FALSE]
