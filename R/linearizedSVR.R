@@ -1,6 +1,6 @@
 ##' Train and predict using prototype-based Linearized Support-Vector Regression methods.
 ##'
-##' .. content for \details{} ..
+##' .. content for \\details{} ..
 ##'
 ##' @name linearizedSVR-package
 ##' @docType package
@@ -12,9 +12,9 @@ library(expectreg)
 
 
 
-##' .. content for \description{} (no empty lines) ..
+##' .. content for \\description{} (no empty lines) ..
 ##'
-##' .. content for \details{} ..
+##' .. content for \\details{} ..
 ##' @title LinearizedSVRTrain
 ##' @param X matrix of examples, one example per row.
 ##' @param Y vector of target values.  Must be the same length as the number of rows in \code{X}.
@@ -92,9 +92,9 @@ LinearizedSVRTrain <- function(X, Y,
   return(model)
 }
 
-##' .. content for \description{} (no empty lines) ..
+##' .. content for \\description{} (no empty lines) ..
 ##'
-##' .. content for \details{} ..
+##' .. content for \\details{} ..
 ##' @title predict
 ##' @param model a model previously trained using \code{LinearizedSVRTrain()}
 ##' @param newdata a matrix of new data to run predictions on, with
