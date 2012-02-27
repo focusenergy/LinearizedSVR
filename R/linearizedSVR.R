@@ -36,6 +36,7 @@ library(expectreg)
 ##' package.
 ##' @return a model object that can later be used as the first
 ##' argument for the \code{predict()} method.
+##' @export
 LinearizedSVRTrain <- function(X, Y,
                 C = 1, epsilon = 0.01, nump = floor(sqrt(N)),
                 ktype=rbfdot, kpar, prototypes=c("kmeans","random"), clusterY=FALSE,
@@ -101,6 +102,7 @@ LinearizedSVRTrain <- function(X, Y,
 ##' the same columns as \code{X} had during training
 ##' @return a vector of predicted regression values, with length equal
 ##' to the number of rows in \code{newdata}.
+##' @export
 predict.LinearizedSVR <- function(model, newdata){
   tmp <- .normalize(cbind(0, newdata), model$params) #the zero column is because the params had the target also
   Xn <- tmp$Xn[, -1, drop=FALSE]
