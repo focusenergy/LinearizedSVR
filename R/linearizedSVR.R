@@ -8,7 +8,7 @@ LinearizedSVRTrain <- function(X, Y,
                 epsilon.up=epsilon, epsilon.down=epsilon, quantile = NULL){
 
   N <- nrow(X); D <- ncol(X)
-  tmp <- normalize(cbind(Y,X))
+  tmp <- .normalize(cbind(Y,X))
   Xn <- tmp$Xn[,-1]
   Yn <- tmp$Xn[,1]
   pars <- tmp$params
@@ -60,7 +60,7 @@ LinearizedSVRTrain <- function(X, Y,
 
 
 predict.LinearizedSVR <- function(model, newdata){
-  tmp <- normalize(cbind(0, newdata), model$params) #the zero column is because the params had the target also
+  tmp <- .normalize(cbind(0, newdata), model$params) #the zero column is because the params had the target also
   Xn <- tmp$Xn[, -1, drop=FALSE]
   Xt <- kernelMatrix(model$kernel, Xn, model$prototypes)
   Xt <- cbind(Xt, array(1, dim(Xt)[1]))
@@ -73,8 +73,7 @@ predict.LinearizedSVR <- function(model, newdata){
 ## Old name, for backward compatibility
 LinearizedSVRPredict <- predict.LinearizedSVR
 
-
-normalize <- function(X, params){
+.normalize <- function(X, params){
   if (missing(params)){
     params <- list(MM = apply(X, 2, max), mm = apply(X, 2, min))
   }
@@ -83,7 +82,7 @@ normalize <- function(X, params){
   return(list(Xn=Xn, params=params))
 }
 
-unnormalize <- function(X, params){
+.unnormalize <- function(X, params){
   Xn <- sweep(X, 2, ifelse(params$MM==params$mm, 1, params$MM-params$mm), FUN=`*`)
   Xn <- sweep(Xn, 2, params$mm, FUN=`+`)
   return(Xn)
