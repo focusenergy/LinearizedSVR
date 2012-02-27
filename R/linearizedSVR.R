@@ -97,13 +97,16 @@ LinearizedSVRTrain <- function(X, Y,
 ##'
 ##' .. content for \\details{} ..
 ##' @title predict
-##' @param model a model previously trained using \code{LinearizedSVRTrain()}
+##' @param object a model previously trained using \code{LinearizedSVRTrain()}
 ##' @param newdata a matrix of new data to run predictions on, with
 ##' the same columns as \code{X} had during training
+##' @param ... further arguments passed to or from other methods
 ##' @return a vector of predicted regression values, with length equal
 ##' to the number of rows in \code{newdata}.
-##' @export
-predict.LinearizedSVR <- function(model, newdata){
+##' @method predict LinearizedSVR
+##' @S3method predict LinearizedSVR
+predict.LinearizedSVR <- function(object, newdata, ...){
+  model <- object
   tmp <- .normalize(cbind(0, newdata), model$params) #the zero column is because the params had the target also
   Xn <- tmp$Xn[, -1, drop=FALSE]
   Xt <- kernelMatrix(model$kernel, Xn, model$prototypes)
