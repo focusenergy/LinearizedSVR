@@ -1,4 +1,4 @@
-Package: linearizedSVR
+Package: LinearizedSVR
 Type: Package
 Title: Linearized Support Vector Regression
 Version: 1.0

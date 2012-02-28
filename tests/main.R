@@ -1,4 +1,4 @@
 library(testthat)
-library(linearizedSVR)
+library(LinearizedSVR)
 
-test_package("linearizedSVR")
+test_package("LinearizedSVR")
