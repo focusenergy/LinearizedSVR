@@ -2,7 +2,7 @@
 ##'
 ##' .. content for \\details{} ..
 ##'
-##' @name linearizedSVR-package
+##' @name LinearizedSVR-package
 ##' @docType package
 ##' @title Linearized Support Vector Regression
 
