@@ -37,6 +37,13 @@ library(expectreg)
 ##' @return a model object that can later be used as the first
 ##' argument for the \code{predict()} method.
 ##' @export
+##' @examples
+##' dat <- rbind(data.frame(y=2, x1=rnorm(500, 1), x2=rnorm(500, 1)),
+##'              data.frame(y=1, x1=rnorm(500,-1), x2=rnorm(500,-1)))
+##' mod <- LinearizedSVRTrain(X=as.matrix(dat[-1]), Y=dat$y, nump=6)
+##' res <- predict(mod, newdata=as.matrix(dat[-1]))
+##' plot(x2 ~ x1, dat, col=c("red","green")[1+(res>1.5)], pch=c(3,20)[dat$y])
+
 LinearizedSVRTrain <- function(X, Y,
                 C = 1, epsilon = 0.01, nump = floor(sqrt(N)),
                 ktype=rbfdot, kpar, prototypes=c("kmeans","random"), clusterY=FALSE,
