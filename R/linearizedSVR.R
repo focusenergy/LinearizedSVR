@@ -117,9 +117,6 @@ predict.LinearizedSVR <- function(object, newdata, ...){
   return(Y.hat)
 }
 
-## Old name, for backward compatibility
-LinearizedSVRPredict <- predict.LinearizedSVR
-
 .normalize <- function(X, params){
   if (missing(params)){
     params <- list(MM = apply(X, 2, max), mm = apply(X, 2, min))
