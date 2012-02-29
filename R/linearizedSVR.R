@@ -100,9 +100,13 @@ LinearizedSVRTrain <- function(X, Y,
   return(model)
 }
 
-##' .. content for \\description{} (no empty lines) ..
+##' Predict method for LinearizedSVR models
 ##'
-##' .. content for \\details{} ..
+##' This method produces predicted value, obtained by evaluating the
+##' trained model \code{object} on the given data set \code{newdata}.
+##' The columns of \code{newdata} must correspond exactly to the
+##' columns of \code{X} when the model \code{object} was created.
+##'
 ##' @title predict
 ##' @param object a model previously trained using \code{LinearizedSVRTrain()}
 ##' @param newdata a matrix of new data to run predictions on, with
