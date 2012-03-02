@@ -1,7 +1,7 @@
 ##' Train and predict using prototype-based Linearized Support-Vector Regression methods.
 ##'
-##' Linearized support vector regression is a kernel regression method
-##' that where the basis are chosen apriori (instead of by the
+##' Linearized Support Vector Regression is a kernel regression method
+##' where the basis is chosen a priori (instead of by the
 ##' training algorithm as is done by the traditional support vector
 ##' regression method). This allows the training method to take
 ##' advantage of fast linear methods like (LiblineaR, lm) etc.
@@ -14,16 +14,16 @@
 ##'
 ##' In order to take advantage of LiblineaR, a fast linear classifier
 ##' whose training scales linearly with the number of examples, we
-##' reduced regression to classification using the insight proposed in
-##' [2]. Given a training dataset, $\{x_i, y_i\}_{i=1:N}$ where we
-##' need to build a regression model to predict $y$ from $x$ we
-##' construct a $\{0,1\}$ classification problem with data $\{(x_i,
-##' y_i+\epsilon), 1}_{i=1:N} \cup \{(x_i, y_i-\epsilon), 0}_{i=1:N}$.
-##' That is we move the data "up" and "down" by epsilon and then
+##' reduce regression to classification using the insight proposed in
+##' [2]. Given a training dataset \eqn{\{x_i, y_i\}_{i=1:N}} where we
+##' need to build a regression model to predict \eqn{y} from \eqn{x} we
+##' construct a \eqn{\{0,1\}} classification problem with data
+##' \eqn{\{(x_i, y_i+\epsilon), 1\}_{i=1:N} \cup \{(x_i, y_i-\epsilon), 0\}_{i=1:N}}.
+##' That is, we move the data "up" and "down" by epsilon and then
 ##' attempt to find the boundary between the two sets. The
 ##' classification boundary then determines the regression surface. At
 ##' predict time, in order to obtain the regression value for a test
-##' $x$ we find the $y$ that would lie on the boundary.
+##' \eqn{x} we find the \eqn{y} that would lie on the boundary.
 ##'
 ##' After transforming the data into the chosen basis, it is trivial
 ##' to use any other linear methods (e.g., quantreg, rlm, expect.reg)
@@ -40,13 +40,13 @@
 ##' package. The epsilon.up and epsilon.down parameters allows the
 ##' epsilon insensitivity band for the regression to be asymmetric.
 ##'
-##'
+##' @references
 ##' [1] Balcan, Maria-Florina; Blum, Avrim; and Vempala, Santosh,
 ##' "Kernels as Features: On Kernels, Margins, and Low-dimensional
 ##' Mappings" (2006). Computer Science Department. Paper 153.
-##' http://repository.cmu.edu/compsci/153
+##' \url{http://repository.cmu.edu/compsci/153}
 ##'
-##' [2]"A Geometric Approach to Support Vector Regression", Jinbo Bi
+##' [2] "A Geometric Approach to Support Vector Regression", Jinbo Bi
 ##' and Kristin P. Bennett, Neurocomputing, 55, 2003, pp. 79-108
 ##'
 ##'
