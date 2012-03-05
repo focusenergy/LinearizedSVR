@@ -53,6 +53,7 @@
 ##' @name LinearizedSVR-package
 ##' @docType package
 ##' @title Linearized Support Vector Regression
+##' @seealso LinearizedSVRTrain
 
 library(kernlab)
 library(LiblineaR)
@@ -60,9 +61,12 @@ library(expectreg)
 
 
 
-##' .. content for \\description{} (no empty lines) ..
+##' Train a prototype-based Linearized Support-Vector Regression model
 ##'
-##' .. content for \\details{} ..
+##' This function trains a new LinearizedSVR model based on \code{X}
+##' and \code{Y}.  See \link{LinearizedSVR-package} for an explanation
+##' of how such models are defined.
+##'
 ##' @title LinearizedSVRTrain
 ##' @param X matrix of examples, one example per row.
 ##' @param Y vector of target values.  Must be the same length as the number of rows in \code{X}.
@@ -85,6 +89,7 @@ library(expectreg)
 ##' @return a model object that can later be used as the first
 ##' argument for the \code{predict()} method.
 ##' @export
+##' @seealso LinearizedSVR-package
 ##' @examples
 ##' dat <- rbind(data.frame(y=2, x1=rnorm(500, 1), x2=rnorm(500, 1)),
 ##'              data.frame(y=1, x1=rnorm(500,-1), x2=rnorm(500,-1)))
