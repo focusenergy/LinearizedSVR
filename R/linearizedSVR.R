@@ -83,8 +83,8 @@ library(expectreg)
 ##' \code{epsilon} in the positive direction.
 ##' @param epsilon.down allows you to use a different setting for
 ##' \code{epsilon} in the negative direction.
-##' @param quantile if non-null, do quantile regression using the
-##' given quantile value.  Currently uses the \code{expectreg}
+##' @param expectile if non-null, do expectile regression using the
+##' given expectile value.  Currently uses the \code{expectreg}
 ##' package.
 ##' @return a model object that can later be used as the first
 ##' argument for the \code{predict()} method.
