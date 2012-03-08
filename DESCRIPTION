@@ -5,12 +5,14 @@ Version: 1.0
 Date: 2012-02-15
 Author: Sriharsha Veeramachaneni and Ken Williams
 Maintainer: Ken Williams <ken.williams@windlogics.com>
-Description: Train and predict using prototype-based Linearized Support-Vector
-    Regression methods.
-License: Unknown
+Description: Train and predict using fast prototype-based Linearized
+    Support-Vector Regression methods.
+License: BSD
+Copyright: WindLogics Inc., 2012
 Collate:
     'linearizedSVR.R'
 Depends:
     kernlab,
     LiblineaR,
-    expectreg
+    expectreg,
+    testthat
