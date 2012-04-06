@@ -100,23 +100,26 @@ library(expectreg)
 LinearizedSVRTrain <- function(X, Y,
                 C = 1, epsilon = 0.01, nump = floor(sqrt(N)),
                 ktype=rbfdot, kpar, prototypes=c("kmeans","random"), clusterY=FALSE,
-                epsilon.up=epsilon, epsilon.down=epsilon, expectile = NULL){
+                epsilon.up=epsilon, epsilon.down=epsilon, expectile = NULL, scale=TRUE){
 
   N <- nrow(X); D <- ncol(X)
-  tmp <- .normalize(cbind(Y,X))
-  Xn <- tmp$Xn[,-1]
-  Yn <- tmp$Xn[,1]
-  pars <- tmp$params
+  if (scale) {
+    tmp <- .normalize(cbind(Y,X))
+    Xn <- tmp$Xn[,-1]
+    Yn <- tmp$Xn[,1]
+    pars <- tmp$params
+  } else {
+    pars <- list(MM=rep(1,D+1), mm=rep(0,D+1))
+  }
+  rm(tmp, X, Y)  ## Free some memory
 
   prototypes <- switch(match.arg(prototypes),
                        kmeans = if(clusterY) {
-                             suppressWarnings(kmeans(tmp$Xn, centers=nump))$centers[,-1]
+                             suppressWarnings(kmeans(cbind(Yn,Xn), centers=nump))$centers[,-1]
                            } else {
                              suppressWarnings(kmeans(Xn, centers=nump))$centers
                            },
                        random = Xn[sample(nrow(Xn),nump),])
-  rm(tmp, X, Y)  ## Free some memory
-
 
   if(!is.na(match("sigma", names(formals(ktype))))){
     if (missing(kpar)) {
