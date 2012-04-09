@@ -1,7 +1,7 @@
 Package: LinearizedSVR
 Type: Package
 Title: Linearized Support Vector Regression
-Version: 1.0
+Version: 1.0.1
 Date: 2012-02-15
 Author: Sriharsha Veeramachaneni and Ken Williams
 Maintainer: Ken Williams <ken.williams@windlogics.com>
