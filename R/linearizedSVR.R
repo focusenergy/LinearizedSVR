@@ -121,7 +121,7 @@ LinearizedSVRTrain <- function(X, Y,
                            },
                        random = Xn[sample(nrow(Xn),nump),])
 
-  if(!is.na(match("sigma", names(formals(ktype))))){
+  if("sigma" %in% names(formals(ktype))){
     if (missing(kpar)) {
       kpar <- list()
     }
