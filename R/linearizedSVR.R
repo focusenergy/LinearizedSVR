@@ -100,7 +100,8 @@ library(expectreg)
 LinearizedSVRTrain <- function(X, Y,
                 C = 1, epsilon = 0.01, nump = floor(sqrt(N)),
                 ktype=rbfdot, kpar, prototypes=c("kmeans","random"), clusterY=FALSE,
-                epsilon.up=epsilon, epsilon.down=epsilon, expectile = NULL, scale=TRUE){
+                epsilon.up=epsilon, epsilon.down=epsilon, expectile = NULL, scale=TRUE,
+                sigest='sigma.est'){
 
   N <- nrow(X); D <- ncol(X)
   if (scale) {
@@ -126,11 +127,11 @@ LinearizedSVRTrain <- function(X, Y,
       kpar <- list()
     }
     if(is.null(kpar$sigma)){
-      kpar$sigma <- median(dist(Xn[sample(nrow(Xn),min(nrow(Xn),50)),]))
+      sigest <- match.fun(sigest)
+      kpar$sigma <- sigest(Xn)
+      message("Sigma estimated: ", kpar$sigma)
     }
   }
-  if ('sigma' %in% names(kpar))
-    message("Sigma: ", kpar$sigma)
 
   kernel <- do.call(ktype, kpar)
 
@@ -154,6 +155,16 @@ LinearizedSVRTrain <- function(X, Y,
   model <- list(W = W, prototypes=prototypes, params=pars, kernel=kernel)
   class(model) <- 'LinearizedSVR'
   return(model)
+}
+
+##' Quickly estimates a reasonable default value for the 'sigma'
+##' parameter to several of kernlab's kernel functions.
+##' @export
+sigma.est <- function(X, method=c('meddist','invvar')) {
+  switch(match.arg(method),
+         meddist = median(dist(X[sample(nrow(X),min(nrow(X),50)),])),
+         invvar = 1/(2*median(dist(X[sample(nrow(X),min(nrow(X),50)),]))^2)
+         )
 }
 
 ##' Predict method for LinearizedSVR models
