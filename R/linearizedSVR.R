@@ -188,7 +188,7 @@ predict.LinearizedSVR <- function(object, newdata, ...){
   tmp <- .normalize(cbind(0, newdata), model$params) #the zero column is because the params had the target also
   Xn <- tmp$Xn[, -1, drop=FALSE]
   Xt <- kernelMatrix(model$kernel, Xn, model$prototypes)
-  Xt <- cbind(Xt, array(1, dim(Xt)[1]))
+  Xt <- cbind(Xt, 1)
   wx.b <- Xt %*% model$W[-1] #all but the first weight
   Y.hat <- as.vector(-wx.b / model$W[1])
   Y.hat <- Y.hat *(model$params$MM[1]-model$params$mm[1]) + model$params$mm[1] #unnormalize predictions
