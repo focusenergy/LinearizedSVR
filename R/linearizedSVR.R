@@ -54,10 +54,7 @@
 ##' @docType package
 ##' @title Linearized Support Vector Regression
 ##' @seealso LinearizedSVRTrain
-
-library(kernlab)
-library(LiblineaR)
-library(expectreg)
+NULL
 
 
 
@@ -101,6 +98,10 @@ library(expectreg)
 ##' mod <- LinearizedSVRTrain(X=as.matrix(dat[-1]), Y=dat$y, nump=6)
 ##' res <- predict(mod, newdata=as.matrix(dat[-1]))
 ##' plot(x2 ~ x1, dat, col=c("red","green")[1+(res>1.5)], pch=c(3,20)[dat$y])
+##'
+##' @importFrom kernlab rbfdot kernelMatrix
+##' @importFrom LiblineaR LiblineaR
+##' @importFrom expectreg expectreg.ls
 
 LinearizedSVRTrain <- function(X, Y,
                 C = 1, epsilon = 0.01, nump = floor(sqrt(N)),

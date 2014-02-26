@@ -11,8 +11,9 @@ License: BSD
 Copyright: WindLogics Inc., 2012
 Collate:
     'linearizedSVR.R'
-Depends:
+Imports:
     kernlab,
     LiblineaR,
-    expectreg,
+    expectreg
+Suggests:
     testthat
