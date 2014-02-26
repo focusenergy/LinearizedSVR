@@ -1,0 +1,22 @@
+LinearizedSVR 1.2  Wed, Feb 26, 2014 11:28:05 AM
+=======================
+
+* Let ROxygen control collation
+
+* Be more careful about importing stuff into our namespace
+
+* Add missing documentation for some parameters
+
+* Removed superfluous .gitignore file from the distro
+
+* More control over sigma-estimation - expose the sigma-estimation
+  function, and let the caller provide a different function if they
+  want.
+
+* Add a scale= parameter to control whether scaling is performed
+
+
+LinearizedSVR 1.0  Thu Mar 8 10:47:11 2012 -0600
+=======================
+
+* First release to CRAN
