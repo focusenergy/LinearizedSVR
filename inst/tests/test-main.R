@@ -13,6 +13,15 @@ test_that("Basic result should work", {
   expect_true(mse(res, dat$y) < 0.1)
 })
 
+test_that("Should work without normalization", {
+  dat <- rbind(data.frame(y=2, x1=rnorm(500, 1), x2=rnorm(500, 1)),
+               data.frame(y=1, x1=rnorm(500,-1), x2=rnorm(500,-1)))
+  mod <- LinearizedSVRTrain(X=as.matrix(dat[-1]), Y=dat$y, nump=6, scale=FALSE)
+  res <- predict(mod, newdata=as.matrix(dat[-1]))
+  expect_true(mean(res > 1.5) < 0.6)
+  expect_true(mean(res > 1.5) > 0.4)
+  expect_true(mse(res, dat$y) < 0.15)  # Result just isn't as good
+})
 
 
 ## An example that goes very badly with clusterY=FALSE, but often

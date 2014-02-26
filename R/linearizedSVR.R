@@ -112,21 +112,21 @@ LinearizedSVRTrain <- function(X, Y,
   N <- nrow(X); D <- ncol(X)
   if (scale) {
     tmp <- .normalize(cbind(Y,X))
-    Xn <- tmp$Xn[,-1]
-    Yn <- tmp$Xn[,1]
+    X <- tmp$Xn[,-1]
+    Y <- tmp$Xn[,1]
     pars <- tmp$params
+    rm(tmp)
   } else {
     pars <- list(MM=rep(1,D+1), mm=rep(0,D+1))
   }
-  rm(tmp, X, Y)  ## Free some memory
 
   prototypes <- switch(match.arg(prototypes),
                        kmeans = if(clusterY) {
-                             suppressWarnings(kmeans(cbind(Yn,Xn), centers=nump))$centers[,-1]
+                             suppressWarnings(kmeans(cbind(Y,X), centers=nump))$centers[,-1]
                            } else {
-                             suppressWarnings(kmeans(Xn, centers=nump))$centers
+                             suppressWarnings(kmeans(X, centers=nump))$centers
                            },
-                       random = Xn[sample(nrow(Xn),nump),])
+                       random = X[sample(nrow(X),nump),])
 
   if("sigma" %in% names(formals(ktype))){
     if (missing(kpar)) {
@@ -134,18 +134,18 @@ LinearizedSVRTrain <- function(X, Y,
     }
     if(is.null(kpar$sigma)){
       sigest <- match.fun(sigest)
-      kpar$sigma <- sigest(Xn)
+      kpar$sigma <- sigest(X)
       message("Sigma estimated: ", kpar$sigma)
     }
   }
 
   kernel <- do.call(ktype, kpar)
 
-  Xt <- kernelMatrix(kernel, Xn, prototypes)
+  Xt <- kernelMatrix(kernel, X, prototypes)
   message("Kernel dimensions: [", paste(dim(Xt), collapse=' x '), "]")
 
-  Xt0 <- cbind(Yn-epsilon.down, Xt)
-  Xt1 <- cbind(Yn+epsilon.up, Xt)
+  Xt0 <- cbind(Y-epsilon.down, Xt)
+  Xt1 <- cbind(Y+epsilon.up, Xt)
   data <- rbind(Xt0, Xt1)
   labels <- rep(c(0,1), each=N)
 
@@ -154,7 +154,7 @@ LinearizedSVRTrain <- function(X, Y,
     W <- svc$W
   }
   else{
-    ex <- expectreg.ls(Yn~rb(Xt, type="special", B=Xt, P=diag(rep(1, nump))),
+    ex <- expectreg.ls(Y~rb(Xt, type="special", B=Xt, P=diag(rep(1, nump))),
                       estimate="bundle", smooth="fixed", expectiles=expectile)
     W <- c(-1, unlist(ex$coefficients), ex$intercept)
   }
