@@ -107,7 +107,7 @@ LinearizedSVRTrain <- function(X, Y,
                 C = 1, epsilon = 0.01, nump = floor(sqrt(N)),
                 ktype=rbfdot, kpar, prototypes=c("kmeans","random"), clusterY=FALSE,
                 epsilon.up=epsilon, epsilon.down=epsilon, expectile = NULL, scale=TRUE,
-                sigest='sigma.est'){
+                sigest=sigma.est){
 
   N <- nrow(X); D <- ncol(X)
   if (scale) {
@@ -134,7 +134,7 @@ LinearizedSVRTrain <- function(X, Y,
     }
     if(is.null(kpar$sigma)){
       sigest <- match.fun(sigest)
-      kpar$sigma <- sigest(X)
+      kpar$sigma <- sigest(X, Y=Y)
       message("Sigma estimated: ", kpar$sigma)
     }
   }
@@ -170,7 +170,7 @@ LinearizedSVRTrain <- function(X, Y,
 ##' @param method a which procedure to use for estimation - 'meddist' means
 ##' @param ... currently ignored
 ##' @export
-sigma.est <- function(X, method=c('meddist','invvar')) {
+sigma.est <- function(X, method=c('meddist','invvar'), ...) {
   switch(match.arg(method),
          meddist = median(dist(X[sample(nrow(X),min(nrow(X),50)),])),
          invvar = 1/(2*median(dist(X[sample(nrow(X),min(nrow(X),50)),]))^2)
