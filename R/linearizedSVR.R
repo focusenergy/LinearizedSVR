@@ -86,6 +86,11 @@ library(expectreg)
 ##' @param expectile if non-null, do expectile regression using the
 ##' given expectile value.  Currently uses the \code{expectreg}
 ##' package.
+##' @param scale a boolean value indicating whether \code{X} and \code{Y} should
+##'   be normalized (to zero-mean and unit-variance) before learning.
+##' @param sigest if the kernel expects a \code{sigma} parameter and none is
+##'   provided in \code{kpar}, this parameter specifies a function to use to
+##'   compute it.
 ##' @return a model object that can later be used as the first
 ##' argument for the \code{predict()} method.
 ##' @export
@@ -159,6 +164,10 @@ LinearizedSVRTrain <- function(X, Y,
 
 ##' Quickly estimates a reasonable default value for the 'sigma'
 ##' parameter to several of kernlab's kernel functions.
+##'
+##' @param X a numeric matrix
+##' @param method a which procedure to use for estimation - 'meddist' means
+##' @param ... currently ignored
 ##' @export
 sigma.est <- function(X, method=c('meddist','invvar')) {
   switch(match.arg(method),
