@@ -9,8 +9,6 @@ Description: Train and predict using fast prototype-based Linearized
     Support-Vector Regression methods.
 License: BSD
 Copyright: WindLogics Inc., 2012
-Collate:
-    'linearizedSVR.R'
 Imports:
     kernlab,
     LiblineaR,
