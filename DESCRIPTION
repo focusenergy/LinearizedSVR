@@ -6,7 +6,7 @@ Author: Sriharsha Veeramachaneni and Ken Williams
 Maintainer: Ken Williams <ken.williams@windlogics.com>
 Description: Train and predict using fast prototype-based Linearized
     Support-Vector Regression methods.
-License: BSD
+License: BSD_3_clause + file LICENSE
 Copyright: WindLogics Inc., 2012-2014
 Imports:
     kernlab,
